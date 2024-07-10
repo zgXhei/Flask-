@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ questions.title }}
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/detail.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="row" style="margin-top: 20px;">
+        <div class="col"></div>
+        <div class="col-10" style="background-color: #fff;padding: 20px;">
+            <h3 class="page-title">{{ questions.title }}</h3>
+            <p class="question-info">
+                <span>作者：{{questions.author.username}}</span>
+                <span>时间：{{questions.creat_time}}</span>
+            </p>
+            <hr>
+            <p class="question-content">{{questions.content}}</p>
+            <hr>
+            <h4 class="comment-group-title">评论：</h4>
+            <form action="{{url_for('qa.public_answer')}}" method="post">
+                <div class="form-group">
+                    <input type="text" placeholder="请填写评论" name="content" class="form-control">
+                    <input type="hidden"  name="question_id" value="{{ questions.id }}">
+                </div>
+                <div class="form-group" style="text-align: right;">
+                    <button class="btn btn-primary">评论</button>
+                </div>
+            </form>
+            <ul class="comment-group">
+                {% for answer in questions.answer %}
+                    <li>
+                        <div class="user-info">
+                            <img class="avatar" src="{{ url_for('static',filename='/images/avatar.jpg') }}" alt="">
+                            <span class="username">{{ answer.author.username }}</span>
+                            <span class="create-time">{{ answer.creat_time}}</span>
+                        </div>
+                        <p class="comment-content">{{ answer.content }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col"></div>
+    </div>
+{% endblock %}
